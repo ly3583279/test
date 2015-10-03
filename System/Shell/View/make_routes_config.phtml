@@ -1,0 +1,26 @@
+// URL Rewrite Example
+// URL原始参数：/index.php?c=main&m=index&v=test
+// URL映射：   /controller/method/argument/
+// 直接映射：   $routes['journals'] = 'blogs';
+// 名称映射到ID：$routes['blog/joe'] = 'blogs/users/34';
+// 匹配任何参数：$routes['product/(:any)'] = 'catalog/product_lookup';
+// 仅匹配数字：  $routes['product/(:num)'] = 'catalog/product_lookup_by_id/$1';
+// 正则匹配：   $routes['products/([a-z]+)/(\d+)'] = '$1/id_$2';
+
+$routes = array();
+
+$routes['default'] = 'main';
+
+//$routes['demo/(:num)'] = 'demo/id/$1';
+//$routes['demo/(:any)'] = 'demo/detail/$1';
+//$routes['list'] = 'demo/list';
+//$routes['news-(:num)'] = 'demo/detail/$1';
+
+/* RESTful
+$routes['rest/(:num)'] = array(
+   'GET' => 'demo/show/$1';
+   'POST' => 'demo/create/$1';
+   'PUT' => 'demo/update/$1';
+   'DELETE' => 'demo/delete/$1';
+);
+//*/

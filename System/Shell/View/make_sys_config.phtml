@@ -1,0 +1,138 @@
+$sysConfig = array();
+
+// 服务器配置
+$sysConfig['charset'] = 'UTF-8';
+$sysConfig['timezone'] = '8';
+
+// Cookie设置
+$sysConfig['cookie_domain'] = ''; //'.domain.com';
+$sysConfig['cookie_key'] = 'XXXXXXXX';
+$sysConfig['cookie_pre'] = 'domain_';
+$sysConfig['cookie_path'] = '/';
+
+// 系统设置
+$sysConfig['name'] = 'The New Site';
+$sysConfig['title'] = 'Site Title';
+$sysConfig['url'] = 'http://www.domain.com';
+$sysConfig['logo'] = 'http://www.domain.com/static/image/logo.png';
+$sysConfig['slogan'] = 'Welcome! Welcome! Welcome!';
+$sysConfig['slogan_url'] = 'http://www.domain.com/welcome';
+$sysConfig['keywords'] = 'Site keywords';
+$sysConfig['description'] = 'This is site description！';
+$sysConfig['miibeian'] = '京ICP备XXXXXX号';
+
+// 系统参数
+$sysConfig['base_url'] = 'http://www.coolapk.com';
+$sysConfig['base_attach_url'] = 'http://attach.coolapk.com';
+$sysConfig['base_avatar_url'] = 'http://avatar.coolapk.com';
+$sysConfig['base_download_url'] = 'http://dl.coolapk.com';
+$sysConfig['base_image_url'] = 'http://image.coolapk.com';
+$sysConfig['base_media_url'] = 'http://media.coolapk.com';
+$sysConfig['base_static_url'] = 'http://static.coolapk.com';
+$sysConfig['base_upload_url'] = 'http://upload.coolapk.com';
+$sysConfig['base_user_url'] = 'http://user.coolapk.com';
+
+// 管理员设置
+$sysConfig['administrator'] = '10001';
+$sysConfig['administrator_email'] = 'coolapk@coolapk.com';
+
+$sysConfig['web_servers'] = '';
+
+/*// 其他设置
+$sysConfig['allow_anonymous'] = '1';
+$sysConfig['allow_groups'] = '';
+$sysConfig['allow_register'] = '1';
+$sysConfig['allow_users'] = '10001,10002';
+$sysConfig['allow_user_domain'] = '0';
+
+$sysConfig['captcha_comment'] = '0';
+$sysConfig['captcha_login'] = '1';
+$sysConfig['captcha_register'] = '1';
+
+$sysConfig['credit_comment_add'] = '2';
+$sysConfig['credit_comment_del'] = '-2';
+$sysConfig['credit_login_add'] = '2';
+$sysConfig['credit_register_add'] = '10';
+
+$sysConfig['exp_comment_add'] = '2';
+$sysConfig['exp_comment_del'] = '-2';
+$sysConfig['exp_login_add'] = '2';
+$sysConfig['exp_register_add'] = '0';
+
+$sysConfig['default_click'] = '0';
+$sysConfig['default_page_size'] = '50';
+$sysConfig['default_search_words'] = '刀塔传奇';
+
+$sysConfig['disallow_emails'] = '*@coolapk.com,*@chacuo.net,*@127168.com';
+$sysConfig['disallow_users'] = '*admin*,*管理*,*版主*,*斑竹*,profile,*center,*setting*,*毛泽东*,*周恩来*,*邓小平*,*江泽民*,*朱镕基*,*胡锦涛*,*温家宝*,*习近平*,*李克强*,*贾庆林*,*周永康*,*maozedong*,*zhouenlai*,*dengxiaoping*,*jiangzemin*,*zhurongji*,*hujintao*,*wenjiabao*,*xijinping*,*likeqiang*,*jiaqinglin*,*zhouyongkang*';
+$sysConfig['disallow_user_domains'] = '*www*,blog*,space*,admin*,app*,news,mail,mall,shop,jobs,search,test,beta,free,demo,m,mobile,bbs,forum,store,client,profile,hosts,*center*,*setting*';
+
+$sysConfig['user_anonymous_group_id'] = '10';
+$sysConfig['user_register_group_id'] = '9';
+$sysConfig['user_online_expires'] = '1800';
+$sysConfig['user_newbie_limit'] = '86400';
+
+$sysConfig['user_domain_max'] = '15';
+$sysConfig['user_domain_min'] = '5';
+$sysConfig['user_domain_root'] = '.coolapk.com';
+
+$sysConfig['user_verify_avatar'] = '0';
+$sysConfig['user_verify_email'] = '0';
+$sysConfig['user_verify_mobile'] = '0';
+$sysConfig['user_verify_realname'] = '0';
+
+$sysConfig['sendmail_from'] = '酷安小编 <no-reply@coolapk.com>';
+$sysConfig['sendmail_smtp_auth'] = '0';
+$sysConfig['sendmail_smtp_from'] = '酷安小编 <no-reply@coolapk.com>';
+$sysConfig['sendmail_smtp_pass'] = '';
+$sysConfig['sendmail_smtp_port'] = '25';
+$sysConfig['sendmail_smtp_server'] = 'smtp.google.com';
+$sysConfig['sendmail_smtp_user'] = '';
+$sysConfig['sendmail_type'] = 'sendmail';
+
+$sysConfig['upload_attach_exts'] = 'apk|zip|7z|gz|rar|iso|doc|docx|xsl|xslx|ppt|pptx|wps';
+$sysConfig['upload_ftp'] = '0';
+$sysConfig['upload_ftp_dir'] = '';
+$sysConfig['upload_ftp_pass'] = '';
+$sysConfig['upload_ftp_pasv'] = '0';
+$sysConfig['upload_ftp_port'] = '21';
+$sysConfig['upload_ftp_server'] = '';
+$sysConfig['upload_ftp_timeout'] = '300';
+$sysConfig['upload_ftp_user'] = '';
+$sysConfig['upload_icon_height'] = '96';
+$sysConfig['upload_icon_width'] = '96';
+$sysConfig['upload_image_exts'] = 'gif|png|jpg|jpeg|bmp';
+$sysConfig['upload_image_height'] = '960';
+$sysConfig['upload_image_width'] = '960';
+$sysConfig['upload_maxsize'] = '50';
+$sysConfig['upload_media_exts'] = 'flv|swf|mp3|rm|rmvb|wmv|wma|wav|mid|mov|mpg';
+$sysConfig['upload_remote_servers'] = 'pub@123.130.124.98,pub@222.186.32.65,pub@222.186.32.38';
+$sysConfig['upload_root'] = '/data/www/CoolApk.com/Public/Upload';
+$sysConfig['upload_thumb_height'] = '240';
+$sysConfig['upload_thumb_width'] = '120';
+
+$sysConfig['watermark_download'] = '1';
+$sysConfig['watermark_pic'] = '/image/watermark.png';
+$sysConfig['watermark_position'] = 'br';
+$sysConfig['watermark_text'] = 'Coolapk.com';
+$sysConfig['watermark_type'] = 'png';
+$sysConfig['watermark_upload'] = '1';
+
+$sysConfig['ext0'] = '';
+$sysConfig['ext1'] = '';
+$sysConfig['ext2'] = '';
+$sysConfig['ext3'] = '';
+$sysConfig['ext4'] = '';
+$sysConfig['ext5'] = '';
+$sysConfig['ext6'] = '';
+$sysConfig['ext7'] = '';
+$sysConfig['ext8'] = '';
+$sysConfig['ext9'] = '';
+$sysConfig['ext10'] = '';
+$sysConfig['ext11'] = '';
+$sysConfig['ext12'] = '';
+$sysConfig['ext13'] = '';
+$sysConfig['ext14'] = '';
+$sysConfig['ext15'] = '';
+
+//*/

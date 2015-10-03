@@ -1,0 +1,268 @@
+namespace Apps\{$isSharedController?'Shared':$appName}\Controller;
+
+use System\Core, System\Core\App, System\Core\Request;
+
+//use System\Util;
+//use System\Core\stdModel;
+
+/**
+ * Class {$controllerClassName}
+
+ * @package Apps\{$isSharedController?'Shared':$appName}\Controller
+ */
+class {$controllerClassName} extends {$parentClassName}
+
+{
+	/*
+	public function __construct()
+	{
+		parent::__construct();
+
+		// 权限检测
+		// App::session()->checkPrivilege('{$privilegePrefix}_{=strtolower($controllerName)}');
+
+        if( !App::session()->isLogin() ) {
+            $this->showMessage('你还没有登录，请先登录！', '/account/login');
+        }
+
+		// if( !App::session()->isSuperAdministrator() ) {
+		//	$this->showMessage('你没有权限进行该操作！');
+		// }
+	}
+	//*/
+
+	// ----------------------  public methods  ----------------------
+
+	/**
+	 * indexMethod
+	 */
+	public function indexMethod()
+	{
+{%if($controllerName=='Main'):}
+		$this->view->setTitle('Welcome');
+		$this->view->setKeywords(App::conf('sys.keywords'));
+		$this->view->setDescription(App::conf('sys.description'));
+
+		$pageTitle = 'Welcome {$appName} ..';
+
+		$this->view->setPageTitle($pageTitle, true);
+
+		/*
+		$this->view->setPageStyle('all:custom.css', 'print:print.css');
+		$this->view->setPageScript('custom.js', 'index.js');
+
+		$this->view->setBodyStyle('background:#EEE');
+		$this->view->setCustomHead('<meta name="author" content="FastPHP"/>', '<meta name="viewport" content="width=device-width, initial-scale=1.0"/>');
+		$this->view->setCustomStyle('body {text-shadow:1px 1px 0 #FFFFFF;}');
+		$this->view->setCustomScript('var author = "FastPHP";');
+		//*/
+
+		$this->view->display();
+{%else:}
+		$this->listMethod();
+{%endif;}
+	}
+
+{%if($isAdminApp):}
+
+	/**
+	 * 添加操作
+	 */
+	public function addMethod()
+	{
+		// App::session()->checkPrivilege('{$privilegePrefix}_{=strtolower($controllerName)}_add');
+		$this->editMethod();
+	}
+
+	/**
+	 * 编辑操作
+	 */
+	public function editMethod()
+	{
+		// App::session()->checkPrivilege('{$privilegePrefix}_{=strtolower($controllerName)}_edit');
+
+		$id = Request::get('id', true);
+		$methodName = empty($id) ? '添加' : '编辑';
+
+		${=lcfirst($controllerName)} = new Model\{$controllerName}();
+
+		$dataArr = array();
+		$requestWarning = array();
+
+		if( Request::isPostSubmitRequest() ) {
+			$requestValidityStatus = true;
+
+			$dataArr['title'] = Request::post('title');
+			$requestWarning['title'] = '';
+			if( empty($dataArr['title']) ) {
+				$requestValidityStatus = false;
+				$requestWarning['title'] = '标题不能为空';
+			}
+
+			/*
+			$dataArr['name'] = Request::post('name');
+			$requestWarning['name'] = '';
+			if( empty($dataArr['name']) ) {
+				$requestValidityStatus = false;
+				$requestWarning['name'] = '名称不能为空';
+			}
+			//*/
+
+			// $dataArr['displayorder'] = Request::post('displayorder', true);
+			$dataArr['description'] = Request::post('description');
+
+			// 将验证结果添加到视图
+			$this->view->setResponseStatus($requestValidityStatus, $requestWarning);
+
+			// 验证通过
+			if( $requestValidityStatus ) {
+				$requestStatus = false;
+				if( $id>0 ) {
+					$requestStatus = ${=lcfirst($controllerName)}->update($dataArr, $id);
+				} else {
+					$requestStatus = ${=lcfirst($controllerName)}->create($dataArr);
+				}
+
+				// 将操作结果添加到视图
+				$this->view->setResponseStatus($requestStatus);
+
+				if( $requestStatus ) {
+					$this->showMessage($methodName . '成功，稍候转入列表页！', '列表:/{=lcfirst($controllerName)}/list');
+				} else {
+					$this->showMessage($methodName . '失败，请稍候再试！');
+				}
+			}
+		} else {
+			if( empty($id) ) {
+				// 初始化 $dataArr
+				$where = '1=1';
+				$params = array();
+				$params['fields'] = 'displayorder';
+				$params['orderBy'] = 'displayorder DESC';
+				$displayOrder = ${=lcfirst($controllerName)}->getScalar($where, $params);
+				$dataArr['displayorder'] = $displayOrder + 1;
+			} else {
+				// 加载 $dataArr
+				$dataArr = ${=lcfirst($controllerName)}->getRow($id);
+			}
+		}
+
+		$this->view->add('id', $id);
+		$this->view->add('dataRow', $dataArr);
+		// $this->view->add('requestWarning', $requestWarning);
+
+		$pageTitle = $methodName . '____';
+
+		$this->view->setTitle( $pageTitle );
+		$this->view->setPageTitle( $pageTitle );
+		$this->view->setNavigation( $pageTitle );
+		// $this->view->setNavigation( ['/admin/'=>'系统管理', $pageTitle] );
+
+		$this->view->display('{=lcfirst($controllerName)}_edit');
+	}
+
+	/**
+	 * 删除操作
+	 */
+	public function delMethod()
+	{
+		// App::session()->checkPrivilege('{$privilegePrefix}_{=strtolower($controllerName)}_del');
+
+		$id = Request::post('id', true);
+
+		if( !empty($id) && Request::isPostSubmitRequest() ) {
+			${=lcfirst($controllerName)} = new Model\{$controllerName}();
+            $requestStatus = ${=lcfirst($controllerName)}->delete($id);
+
+			// 将操作结果添加到视图
+			$this->view->setResponseStatus($requestStatus);
+
+			if( $requestStatus ) {
+				// $this->view->setResponseTarget('#dataRow-'.$id, '');
+				$this->view->setResponseScript('$("#dataRow-'.$id.'").remove();');
+
+				$this->showMessage('删除成功！', '列表:/{=lcfirst($controllerName)}/list');
+			} else {
+				$this->showMessage('删除失败，请稍候再试！');
+			}
+		}
+	}
+
+	/**
+	 * 多行操作
+	 */
+	public function multiMethod()
+	{
+		// App::session()->checkPrivilege('{$privilegePrefix}_{=strtolower($controllerName)}_edit');
+
+		$submitType = Request::post('submitType');
+
+		${=lcfirst($controllerName)} = new Model\{$controllerName}();
+
+		if( Request::isPostSubmitRequest() ) {
+			if( $submitType=='sort' ) {
+				$arr = Request::post('displayorder');
+				if( !empty($arr) && is_array($arr) ) {
+					$where = array();
+					$dataArr = array();
+					foreach( $arr as $k => $displayorder) {
+						$where['id'][] = $k;
+						$dataArr[] = array('displayorder'=>$displayorder);
+					}
+
+                    $requestStatus = ${=lcfirst($controllerName)}->update($dataArr, $where, true);
+
+					$this->view->setResponseStatus($requestStatus);
+
+					if( $requestStatus ) {
+						$this->showMessage('更新排序成功，稍候转入列表页！', '列表:/{=lcfirst($controllerName)}/list');
+					} else {
+						$this->showMessage('更新排序失败，请稍候再试！');
+					}
+				}
+			}
+		}
+	}
+
+{%endif;}
+
+	/**
+	 * 列表
+	 */
+	public function listMethod()
+	{
+		// App::session()->checkPrivilege('{$privilegePrefix}_{=strtolower($controllerName)}_list');
+
+		extract(Request::getPageExtract());
+
+		${=lcfirst($controllerName)} = new Model\{$controllerName}();
+
+		$where = ''; // 'status>=0';
+		$totalCount = ${=lcfirst($controllerName)}->getCount($where);
+
+		$params = array();
+		$params['fields'] = '*';
+		$params['orderBy'] = 'id ASC';
+		$params['rowStart'] = $pageStart;
+		$params['rowCount'] = $pageSize;
+		// $params['indexField'] = $indexField;
+		$dataRows = ${=lcfirst($controllerName)}->getRows($where, $params);
+
+		$this->view->add('dataRows', $dataRows);
+		$this->view->setPagination('/{=lcfirst($controllerName)}/list?p=%s', $page, $totalCount, $pageSize);
+
+		$pageTitle = '__列表';
+
+		$this->view->setTitle($pageTitle);
+		$this->view->setPageTitle($pageTitle);
+		$this->view->setNavigation( $pageTitle );
+		// $this->view->setNavigation( ['/{=strtolower($controllerName)}/'=>'__', $pageTitle] );
+
+		$this->view->display('{=lcfirst($controllerName)}_list');
+	}
+
+
+	// ----------------------  private methods  ----------------------
+
+
+}

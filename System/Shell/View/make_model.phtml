@@ -1,0 +1,108 @@
+namespace Apps\{$isSharedModel?'Shared':$appName}\Model;
+
+use System\Core, System\Core\App, System\Core\Request;
+
+use System\Util\TextUtils;
+//use System\Core\stdModel;
+
+/**
+ * Class {$modelClassName}
+
+ * @package Apps\{$isSharedModel?'Shared':$appName}\Model
+ */
+class {$modelClassName} extends {$parentClassName}
+
+{
+    private static $instance;
+
+	public $tableName = '{=strtolower(substr($modelClassName, 0, -5))}'; // 表名，不带前缀
+	public $primaryKeyName = 'id'; // 主键名称，多列主键用","隔开，如：key,name
+
+    protected $statusMessages = null;
+
+{%if(in_array($modelClassName, array('User','Member'))):}
+	/**
+	 * __initSession: 警告：该函数仅由Session->Provider绑定时自动调用，请勿手工调用
+	 */
+	public function __initSession()
+    {
+        static $sessionInited = false;
+        if ($sessionInited) {
+            exit("Unable to init the model.");
+        }
+        $sessionInited = true;
+
+        // Passport Auth
+        $cookieUid = Request::cookie('uid');
+        $cookieUsername = Request::cookie('username');
+        $cookieAuth = Request::cookie('auth');
+        if (empty($cookieUid) || empty($cookieUsername) || empty($cookieAuth)) {
+            return Request::setCookie('auth', '', 0);
+        }
+
+        // 对Passport信息进行解码
+        $loginData = TextUtils::decryptText(Request::getCookieHash(), $cookieAuth);
+        if (empty($loginData)) {
+            return Request::setCookie('auth', '', 0);
+        }
+
+        // 登录数据
+        list($loginUid, $loginUsername, $loginPassword, $loginRemember, $loginOpenIdType, $loginAuthTime) = explode("\t", $loginData);
+        if (empty($loginUid) || empty($loginUsername) || empty($loginPassword)) {
+            return Request::setCookie('auth', '', 0);
+        }
+
+        // 如果连续两天没有访问过网站，则需要重新登录
+        /* 暂时取消该限制，容易让客户端登陆失败
+        if( (global_item('timestamp') - $loginSessionTime) > 172800 ) {
+            cookie_item('auth', '', 0);
+            return;
+        }
+        //*/
+
+        // Cookie登录信息不一致
+        if ($loginUid != $cookieUid || $loginUsername != $cookieUsername) {
+            return Request::setCookie('auth', '', 0);
+        }
+
+        // 是否自动登录
+        // $loginRemember = cookie_item('remember');
+
+        // 登录
+        return $this->login($loginUid, strrev($loginPassword), $loginRemember, $loginOpenIdType, $loginAuthTime, true);
+	}
+{%endif;}
+	
+	// ----------------------  public methods  ----------------------
+
+    /**
+     * getInstance
+     * @return {$modelClassName} instance
+     */
+    public static function getInstance()
+    {
+        if (self::$instance === null) {
+            self::$instance = new {$modelClassName}();
+        }
+        return self::$instance;
+    }
+
+
+    /**
+     * formatRow
+     * @param $row
+     * @param null|string|array $params
+     * @return mixed
+     */
+    public function formatRow($row, $params = null)
+    {
+        $formatType = is_array($params) ? (array_key_exists('formatType', $params) ? $params['formatType'] : null) : $params;
+
+        return $row;
+    }
+	
+	
+	// ----------------------  private methods  ----------------------
+	
+	
+}

@@ -1,0 +1,15 @@
+{$includeHeader}
+
+
+{%if(!empty($includeMenu)):}{$includeMenu}{%endif;}
+
+
+<div class="jumbotron" style="margin-top:100px">
+    <h1>{$pageTitle}</h1>
+    <p>{$codeAction1}</p>
+    <p>{%if(!empty($codeAction2)):}<pre>{$codeAction2}</pre>{%endif;}</p>
+    <p>{%if(!empty($codeAction3)):}{$codeAction3}{%endif;}</p>
+    <p><a class="btn btn-primary btn-lg">Learn more</a></p>
+</div>
+
+{$includeFooter}

@@ -1,0 +1,48 @@
+$appConfig = array();
+
+// App参数
+$appConfig['name'] = '{$appName}';
+$appConfig['version'] = '1.0.0';
+
+// App信息
+$appConfig['url'] = '/';
+$appConfig['base_url'] = '/';
+$appConfig['base_route_url'] = '/';
+$appConfig['index_url'] = '/';
+$appConfig['login_url'] = '/account/login';
+
+// 系统设置
+$appConfig['theme'] = '';
+$appConfig['allowed_user_role'] = ''; // Member/Tester/Administrator/SuperAdministrator
+$appConfig['anonymous_controller'] = ['Apps\Api\Controller\Account'];
+$appConfig['anonymous_session'] = false;
+$appConfig['session_provider'] = ''; //'Apps\Shared\Model\Member'; //'Member';
+$appConfig['sys_config_table'] = 'sys_config';
+$appConfig['sys_ip_banned_table'] = 'sys_ip_banned';
+$appConfig['sys_bad_words_table'] = 'sys_bad_words';
+
+// 自定义设置
+// $appConfig['custom_item'] = '';
+
+// WWW-Authenticate认证
+$appConfig['WWW_AUTH_USER'] = '{$appName}';
+$appConfig['WWW_AUTH_PW'] = '{=md5(uniqid($appName,true))}';
+
+/* 数据库配置，servers支持读写分离，master_count之前为读写服务器(Master)，master_count之后的为读服务器(Slave)
+$appConfig['db'] = array();
+$appConfig['db']['driver'] = 'MySqli';
+$appConfig['db']['master_count'] = 1;
+$appConfig['db']['log_enabled'] = true;
+$appConfig['db']['servers'] = array(
+    array('host' => 'localhost', 'user' => 'user', 'password' => 'password', 'dbname' => 'dbname', 'charset' => 'UTF-8', 'table_pre' => 'tb_')
+);
+
+// Cache配置
+$appConfig['cache'] = array();
+$appConfig['cache']['driver'] = 'Memcached';
+$appConfig['cache']['enabled'] = true;
+$appConfig['cache']['persistent_id'] = null;
+$appConfig['cache']['servers'] = array(
+    array('192.168.111.11', 11211, 100)
+);
+//*/
